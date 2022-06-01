@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+<div class="container">
+
+
+	<div class="row">
+		<aside class="col-lg-6">
+			<div class="card">
+				<div class="card-body">
+                    <h4 class="card-title mb-4">Adresse de facturation</h4>
+                    <form action="#" method="post" id="order-check-form">
+						{% csrf_token %}
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label>Prénom</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col form-group">
+                                <label>Nom</label>
+								{{ form.last_name }}
+                            </div>
+                        </div> 
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label>Email</label>
+								{{ form.email }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label>Adresse</label>
+								{{ form.address }}
+                            </div>
+                            <div class="col form-group">
+                                <label>Code postal</label>
+								{{ form.zipcode }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label>Ville</label>
+								{{ form.city }}
+                            </div>
+                            <div class="col form-group">
+                                <label>Pays</label>
+								{{ form.country }}
+                            </div>
+                        </div>
+                    </form>
+                </div> 
+			</div> <!-- card.// -->
+
+		</aside> <!-- col.// -->
+		<aside class="col-lg-6">
+
+			<div class="card">
+			<div class="card-body">
+				<table class="table table-borderless table-shopping-cart">
+					<thead class="text-muted">
+						<tr class="small text-uppercase">
+							<th scope="col">Product</th>
+							<th scope="col" width="120">Quantity</th>
+							<th scope="col" width="120">Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for cartitem in cartitems %}
+						<tr>
+							<td>
+								<figure class="itemside align-items-center">
+									<div class="aside"><img src="{{ cartitem.product.images.url }}" class="img-sm"></div>
+									<figcaption class="info">
+										<a href="{% url 'store:product_detail' slug=cartitem.product.slug %}" class="title text-dark">{{ cartitem.product.product_name }}</a>
+
+									</figcaption>
+								</figure>
+							</td>
+							<td> 
+							
+								<!-- col.// -->
+								<div class="col"> 
+									<div class="input-group input-spinner">
+										<span class="">{{cartitem.quantity}}</span>
+									</div> <!-- input-group.// -->
+								</div> <!-- col.// -->
+							
+							</td>
+							<td> 
+								<div class="price-wrap"> 
+									<var class="price">€ {{ cartitem.sub_total|floatformat:2 }}</var> 
+									<small class="text-muted">€ {{ cartitem.product.price|floatformat:2 }} </small> 
+								</div> <!-- price-wrap .// -->
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<button  id="submit-form" class="btn btn-primary btn-block"> Checkout </button>
+				<a href="{% url 'store:store' %}" class="btn btn-light btn-block">Retour</a>
+			</div> <!-- card-body.// -->
+			</div> <!-- card.// -->
+
+		</aside> <!-- col.// -->
+
+
+	</div> <!-- row.// -->
+
+</div> <!-- container .//  -->
+</section>
+<script>
+	check_form = document.getElementById("order-check-form")
+
+	document.getElementById("submit-form").addEventListener("click", function () {
+		check_form.submit();
+	  });
+</script>
+{% endblock %}

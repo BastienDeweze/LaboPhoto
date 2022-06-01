@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+<div class="container">
+{% if 'search' in request.path and products %}
+	<h2 class="title-page">Résultat pour '{{keyword}}'</h2>
+{% elif 'search' in request.path and not products %}
+	<h2 class="title-page">Aucun résultat pour '{{keyword}}'</h2>
+{% else %}
+	<h2 class="title-page">Store</h2>
+{% endif %}
+	
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<aside class="col-md-3">
+		
+<div class="card">
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Categories</h6>
+			</a>
+		</header>
+		<div class="filter-content collapse show" id="collapse_1" style="">
+			<div class="card-body">
+				
+				<ul class="list-menu">
+				<li><a href="{% url 'store:store' %}">Tous les articles  </a></li>
+				{% for color_category in links %}
+				<li><a href="{{ color_category.get_url }}">{{ color_category.category_name }}  </a></li>
+				{% endfor %}
+				</ul>
+
+			</div> <!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group  .// -->
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Sizes </h6>
+			</a>
+		</header>
+		<div class="filter-content collapse show" id="collapse_4" style="">
+			<div class="card-body">
+				{% for size_category in size_categories %}
+					<label class="checkbox-btn">
+						{% if size_category.pk in request.session.size %}
+						<input type="checkbox" checked>
+						{% else %}
+						<input type="checkbox">
+						{% endif %}
+						<a href="{% url 'store:sizesearch' size=size_category.pk %}" class="btn btn-light"> {{ size_category.size }} </a>
+					</label>
+			  	{% endfor %}
+		</div><!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+	
+</div> <!-- card.// -->
+
+	</aside> <!-- col.// -->
+	<main class="col-md-9">
+
+<header class="border-bottom mb-4 pb-3">
+		<div class="form-inline">
+			<span class="mr-md-auto"><strong>{{ product_count }}</strong> produits trouvés </span>
+			
+		</div>
+</header><!-- sect-heading -->
+
+<div class="row">
+
+{% for product in products %}
+	<div class="col-md-4">
+		<figure class="card card-product-grid">
+			<div class="img-wrap"> 
+				
+				<a href="{% url 'store:product_detail' slug=product.slug %}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
+				
+			</div> <!-- img-wrap.// -->
+			<figcaption class="info-wrap">
+				<div class="fix-height">
+					<a href="{% url 'store:product_detail' slug=product.slug %}" class="title">{{ product.product_name }}</a>
+					<div class="price-wrap mt-2">
+						<span class="price">€ {{ product.price }}</span>
+						<del class="price-old">€ {{ product.price|add:"100" }}</del>
+					</div> <!-- price-wrap.// -->
+				</div>
+				{% if product.stock > 0 %}
+				<a href="{% url 'store:product_detail' slug=product.slug %}" class="btn btn-block btn-success">Détails </a>
+				{% else %}
+				<a href="{% url 'carts:add_cart' product_id=product.id%}" class="btn btn-block btn-danger disabled">Rupture de stock </a>
+				{% endif %}
+			</figcaption>
+		</figure>
+	</div> <!-- col.// -->
+
+{% endfor %}
+
+	
+</div> <!-- row end.// -->
+
+<nav class="mt-4" aria-label="Page navigation sample">
+	{% if page_obj.has_other_pages %}
+	  <ul class="pagination">
+			{% if page_obj.has_previous %}
+	    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+			{% else %}
+			<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+			{% endif %}
+
+			{% for i in page_obj.paginator.page_range %}
+				{% if page_obj.number == i %}
+	    		<li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+				{% else %}
+					<li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+				{% endif %}
+	    {% endfor %}
+
+			{% if page_obj.has_next %}
+	    	<li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+			{% else %}
+				<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+			{% endif %}
+	  </ul>
+	{% endif %}
+</nav>
+
+	</main> <!-- col.// -->
+
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

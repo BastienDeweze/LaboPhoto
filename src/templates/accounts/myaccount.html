@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        
+        <div class="row">
+            {% include "includes/deshboard_side.html"%}
+            <main class="col-md-9">
+
+                <article class="card mb-3">
+                    <div class="card-body">
+                        
+                        <figure class="icontext">
+                                <div class="text">
+                                    <strong> {{ request.user.first_name }} {{ request.user.last_name }} </strong> <br> 
+                                    {{ request.user.email }} <br>
+                                </div>
+                        </figure>
+                        <hr>
+        
+                        
+        
+                        <article class="card-group">
+                            {% for key, value in order_data.items %}
+                            <a href="#"  class="card bg btn btn-light">
+                                <div class="p-3">
+                                    <h5 class="card-title">{{ value }}</h5>
+                                    <span>{{ key }}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </article>
+                        
+        
+                    </div> <!-- card-body .// -->
+                </article> <!-- card.// -->
+        
+            </main> <!-- col.// -->
+        </div>
+    </div>
+</Section>
+
+{% endblock %}

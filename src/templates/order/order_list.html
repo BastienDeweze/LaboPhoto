@@ -1,0 +1,35 @@
+<main>
+    <article class="card">
+        <header class="card-hearder">
+        </header>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-over">
+                        <thead class="table table-over">
+                            <tr>
+                                <th scope="col">Order</th>
+                                <th scope="col">Billing Name</th>
+                                <th scope="col">Adresse</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orderslst %}
+                            <p>{{order.pk}}</p>
+                            <tr>
+                                <th scope="row">1</th>
+                                <th scope="col">bastien</th>
+                                <th scope="col">Rue Haute</th>
+                                <th scope="col">152.00 $</th>
+                                <th scope="col">01/01/01</th>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </Article>
+</main>

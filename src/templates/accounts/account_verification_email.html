@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hello {{ user.first_name }},
+
+Click sur le lien pour vérifier ton compte et finir ton inscription.
+
+http://{{ domain }}{% url 'account:activate' uidd64=uid token=token %}
+
+Si ce mail ne vous est pas destiné, ignorez le tout simplement.
+
+{% endautoescape %}

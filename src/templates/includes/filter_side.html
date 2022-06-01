@@ -1,0 +1,131 @@
+<form method="GET" action="{% url 'order:orders' %}">
+<div class="card">
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Client Id</h6>
+			</a>
+		</header>
+		<div class="filter-content collapse" id="collapse_1" style="">
+			<div class="card-body">
+				
+				<input type="text" class="form-control" name="client_id" placeholder="Search" >
+
+			</div> <!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group  .// -->
+
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Order Id</h6>
+			</a>
+		</header>
+		<div class="filter-content collapse" id="collapse_2" style="">
+			<div class="card-body">
+				
+				<input type="text" class="form-control" name="order_id" placeholder="Search" >
+
+			</div> <!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group  .// -->
+
+
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Date</h6>
+			</a>
+		</header>
+		<div class="filter-content collapse" id="collapse_3" style="">
+			<div class="card-body">
+				<div class="input-group date" id="datepicker">
+					<input type="text" class="form-control" name="date">
+					<span class="input-group-append">
+						<span class="input-group-text bg-white">
+							<i class="fa fa-calendar"></i>
+						</span>
+					</span>
+				</div>
+
+			</div> <!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group  .// -->
+
+
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Etat </h6>
+			</a>
+		</header>
+		<div class="filter-content collapse" id="collapse_4" style="">
+			<div class="card-body">
+
+				<div class="form-group">
+					<select id="inputState" class="form-control" name="state_id">
+						<option value="" disable>Etat commande</option>
+						{% for state in states %}
+						<option value="{{ state.pk }}">{{state.label}}</option>
+					  	{% endfor %}
+					</select>
+				</div>
+		</div><!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+	
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Price range </h6>
+			</a>
+		</header>
+		<div class="filter-content collapse " id="collapse_5" style="">
+			<div class="card-body">
+				
+				<div class="form-row">
+				<div class="form-group col-md-6">
+				  <label>Min</label>
+				  <!-- <input class="form-control" placeholder="$0" type="number"> -->
+				  	<select class="mr-2 form-control" name="min_price">
+						<option value="0">$0</option>
+						<option value="50">$50</option>
+						<option value="100">$100</option>
+						<option value="150">$150</option>
+						<option value="200">$200</option>
+						<option value="500">$500</option>
+						<option value="1000">$1000</option>
+					</select>
+				</div>
+				<div class="form-group text-right col-md-6">
+				  <label>Max</label>
+				  	<select class="mr-2 form-control" name="max_price">
+						<option value="50">$50</option>
+						<option value="100">$100</option>
+						<option value="150">$150</option>
+						<option value="200">$200</option>
+						<option value="500">$500</option>
+						<option value="1000">$1000</option>
+						<option value="2000" selected>$2000+</option>
+					</select>
+				</div>
+				</div> <!-- form-row.// -->
+			</div><!-- card-body.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+
+	<button class="btn btn-primary">Filtrer</button>
+	
+</div> <!-- card.// -->
+</form>
+
+<script type="text/javascript">
+	$(function() {
+		$('#datepicker').datepicker();
+	});
+</script>
