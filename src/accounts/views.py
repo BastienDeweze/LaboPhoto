@@ -8,7 +8,9 @@ from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.views.generic.detail import DetailView
 from .models import Account
-from order.models import Order, State
+from order.models import State
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 # Create your views here.
 
@@ -43,7 +45,13 @@ class Login(LoginView):
     form_class = AuthenticationFormCustom
 
 class Logout(LogoutView):
-    pass
+    
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        for cookie in request.COOKIES:
+            response.delete_cookie(cookie)
+        return response
 
 class Activate(RedirectView):
 

@@ -17,9 +17,16 @@ class Store(ListView):
 
     def get_queryset(self, *args, **kwargs) :
         queryset = super().get_queryset()
-        if self.request.session.get("size") and len(self.request.session.get("size")) > 0 :
-            sizes = self.request.session.get("size")
-            return queryset.filter(is_available=True, size_category_id__in=sizes)
+        if (self.request.session.get("size") and len(self.request.session.get("size")) > 0) or (self.request.session.get("color") and len(self.request.session.get("color")) > 0) :
+            if self.request.session.get("size") and len(self.request.session.get("size")) > 0 :
+                sizes = self.request.session.get("size")
+                queryset = queryset.filter(is_available=True, size_category_id__in=sizes)
+            
+            if self.request.session.get("color") and len(self.request.session.get("color")) > 0 :
+                color = self.request.session.get("color")
+                queryset = queryset.filter(is_available=True, color_category_id__in=color)
+            
+            return queryset
 
         return queryset.filter(is_available=True)
 
@@ -67,6 +74,8 @@ class ChangeSize(RedirectView):
     pattern_name = reverse_lazy("store:store")
 
     def get_redirect_url(self, size):
+        if not self.request.session.session_key :
+            self.request.session.create()
         self.request.session.modified = True
         if not 'size' in self.request.session:
             self.request.session['size'] = [size]
@@ -74,4 +83,22 @@ class ChangeSize(RedirectView):
             self.request.session['size'].append(size)
         else :
             self.request.session['size'].pop(self.request.session['size'].index(size))
+        return reverse("store:store")
+
+class ChangeColor(RedirectView):
+    
+    permanent = False
+    query_string = True
+    pattern_name = reverse_lazy("store:store")
+
+    def get_redirect_url(self, color):
+        if not self.request.session.session_key :
+            self.request.session.create()
+        self.request.session.modified = True
+        if not 'color' in self.request.session:
+            self.request.session['color'] = [color]
+        elif color not in self.request.session.get("color") :
+            self.request.session['color'].append(color)
+        else :
+            self.request.session['color'].pop(self.request.session['color'].index(color))
         return reverse("store:store")

@@ -11,6 +11,7 @@ class Product(models.Model):
     price           = models.FloatField()
     images          = models.ImageField(upload_to='photos/products', default='photos/products/defaultproduct.jpg')
     stock           = models.IntegerField()
+    number_of_sale  = models.IntegerField(default=0)
     is_available    = models.BooleanField(default=True)
     color_category  = models.ForeignKey(ColorCategory, on_delete=models.CASCADE, null=True, default=None)
     size_category   = models.ForeignKey(SizeCategory, on_delete=models.CASCADE, null=True, default=None)
@@ -20,7 +21,6 @@ class Product(models.Model):
     
     def save(self, *args, **kwargs) :
         self.product_name = f"{self.size_category.category_name} - {self.color_category.category_name}"
-        print(self.product_name)
         self.slug = slugify(self.product_name)
         return super(Product, self).save(*args, **kwargs)
     
@@ -29,6 +29,7 @@ class Product(models.Model):
             self.stock -= quantity
         else :
             self.stock = 0
+        self.number_of_sale += quantity
         self.save()
 
     def tva_product(self):

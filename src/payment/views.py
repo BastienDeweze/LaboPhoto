@@ -79,14 +79,10 @@ class SuccessPayment(RedirectView):
     pattern_name = reverse_lazy('carts:cart')
 
     def get_redirect_url(self, *args, **kwargs):
-        print(self.request.user)
-        print(self.request.user.id)
         order = Order.objects.get(user_id=self.request.user, is_valided=False)
-        print(order)
         card = Cart.objects.get(cart_id=self.request.user)
         for cart_item in card.cart_items() :
             OrderItems.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity)
-            print(cart_item.product)
             cart_item.product.uodate_stock(cart_item.quantity)
         card.cart_items().delete()
         order.is_valided = True

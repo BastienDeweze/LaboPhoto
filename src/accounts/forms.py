@@ -3,13 +3,28 @@ from .models import Account
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class UserRegisterForm(UserCreationForm):
+    
+    """ Class configurant le formulaire d'inscription sur le site en héritant du formulaire de base proposé par Django.
+
+    Returns:
+        _type_: Le formulaire d'inscription sur le site.
+    """
 
 
     class Meta:
+        """ Configuration des métadonnées
+                - model     : Le model sur lequel le formulaire doit agir.
+                - fields    : Les champs que le formulaire doit prendre en compte.
+        """
         model = Account
         fields = ['first_name', 'last_name', 'phone_number', 'email']
 
     def __init__(self, *args, **kwargs):
+        
+        """ Modification du style du formulaire
+                - Ajout d'un placeholder
+                - Ajout de la classe "form-control" (Bootstrap)
+        """
         super(UserRegisterForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['placeholder'] = 'Enter First Name'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Enter last Name'
@@ -30,10 +45,20 @@ class UserRegisterForm(UserCreationForm):
 
 
 class AuthenticationFormCustom(AuthenticationForm):
+    
+    """Class configurant le formulaire de connexion au site en héritant du formulaire de base proposé par Django.
 
-
-
+    Returns:
+        _type_: Le formulaire de connexion au site.
+    """
+    
     def __init__(self, *args, **kwargs):
+        
+        """ Modification du style du formulaire
+                - Ajout d'un placeholder
+                - Ajout de la classe "form-control" (Bootstrap)
+        """
+        
         super(AuthenticationFormCustom, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = 'Email Address'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'

@@ -5,6 +5,13 @@ from .models import Account
 # Register your models here.
 
 class AccountAdmin(UserAdmin):
+    
+    """Ajout de la gestion des utilisateurs dans l'espace administrateur
+
+    Args:
+        UserAdmin (UserAdmin): Class hérité permettant de modifier l'espace administrateur du site
+    """
+    
     list_display = ('email', 'first_name', 'last_name', 'username',  'last_login', 'is_active', 'date_joined')
     list_display_links = ('email', 'first_name', 'last_name' )
     readonly_fields = ('last_login', 'date_joined')
