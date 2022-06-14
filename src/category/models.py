@@ -32,7 +32,7 @@ class ColorCategory(models.Model):
     
     def save(self, *args, **kwargs) :
         
-        """ Héritage de la fonction "save()" qui est appelé lors d'un update de record.
+        """ Redefinition de la fonction "save()" qui est appelé lors d'un update de record.
             Lorsqu'une catégorie est modifier, il faut recalculer les nom de chaque produit lié à cette catégorie.
         """
         

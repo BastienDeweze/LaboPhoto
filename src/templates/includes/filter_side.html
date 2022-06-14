@@ -1,5 +1,7 @@
 <form method="GET" action="{% url 'order:orders' %}">
 <div class="card">
+
+	{% if request.user.is_admin %}
 	<article class="filter-group">
 		<header class="card-header">
 			<a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
@@ -15,6 +17,7 @@
 			</div> <!-- card-body.// -->
 		</div>
 	</article> <!-- filter-group  .// -->
+	{% endif %}
 
 	<article class="filter-group">
 		<header class="card-header">
@@ -42,8 +45,18 @@
 		</header>
 		<div class="filter-content collapse" id="collapse_3" style="">
 			<div class="card-body">
-				<div class="input-group date" id="datepicker">
+				Date from :
+				<div class="input-group date" id="datepicker1">
 					<input type="text" class="form-control" name="date">
+					<span class="input-group-append">
+						<span class="input-group-text bg-white">
+							<i class="fa fa-calendar"></i>
+						</span>
+					</span>
+				</div>
+				Date to :
+				<div class="input-group date" id="datepicker2">
+					<input type="text" class="form-control" name="date_to">
 					<span class="input-group-append">
 						<span class="input-group-text bg-white">
 							<i class="fa fa-calendar"></i>
@@ -126,6 +139,7 @@
 
 <script type="text/javascript">
 	$(function() {
-		$('#datepicker').datepicker();
+		$('#datepicker1').datepicker();
+		$('#datepicker2').datepicker();
 	});
 </script>

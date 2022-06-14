@@ -9,13 +9,25 @@ from django.db.models import Q
 # Create your views here.
 
 class Store(ListView):
+    
+    """ Vue servant à lister les articles disponible dans le shop.
+        Ils sont trié en fonction des filtres appliqué par l'utilisateur.
+    """
     model = Product
     context_object_name = "products"
-    template_name = "store/store.html"
+    template_name = "store/store.html"  
     paginate_by = 6
     ordering = 'id'
 
     def get_queryset(self, *args, **kwargs) :
+        
+        """ Fonction hérité de la class ListView et servant à renvoyer les articles présent dans le eShop.
+            Les filtres appliqué par l'utilisateur sont stocker dans la session.
+
+        Returns:
+            QuerySet: La liste des articles à afficher dans le shop.
+        """
+        
         queryset = super().get_queryset()
         if (self.request.session.get("size") and len(self.request.session.get("size")) > 0) or (self.request.session.get("color") and len(self.request.session.get("color")) > 0) :
             if self.request.session.get("size") and len(self.request.session.get("size")) > 0 :
@@ -31,15 +43,32 @@ class Store(ListView):
         return queryset.filter(is_available=True)
 
     def get_context_data(self, **kwargs):
+        
+        """ Fonction hérité de la class ListView servant à definir le context du template lié à cette vue.
+
+        Returns:
+            dict: Le context pouvant etre utilisé dans le template html
+        """
         context = super().get_context_data(**kwargs)
         context['product_count'] = self.get_queryset().count()
         return context
 
 class SearchStore(Store):
+    
+    """ Class héritant de la class Store et servant à renvoyer la liste des articles filtrer en fonction du champs text de recherche.
+    """
 
     ordering = '-created_on'
 
     def get_queryset(self, *args, **kwargs) :
+        
+        """ Fonction hérité de la class Store et servant à renvoyer les articles présent dans le eShop.
+            Si la description ou le nom de l'article contient le text tapé par l'utilisateur, alors l'article sera affiché.
+            
+        Returns:
+            QuerySet: La liste des articles à afficher dans le shop.
+        """
+        
         queryset = super().get_queryset()
         
         if 'keyword' in self.request.GET: 
@@ -51,6 +80,13 @@ class SearchStore(Store):
         return queryset
 
     def get_context_data(self, **kwargs):
+        
+        """ Fonction hérité de la class Store servant à definir le context du template lié à cette vue.
+
+        Returns:
+            dict: Le context pouvant etre utilisé dans le template html
+        """
+        
         context = super().get_context_data(**kwargs)
         if 'keyword' in self.request.GET: 
             context['keyword'] = self.request.GET['keyword']
@@ -58,22 +94,30 @@ class SearchStore(Store):
         return context
 
 class ProductDetail(DetailView):
+    
+    """ Vue servant à afficher un produit en particulié dans le detail.
+    """
+    
     model = Product
     context_object_name = "product"
     template_name = "store/product_detail.html"
 
-    def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
-        # context['in_cart'] = CartItem.objects.filter(cart__cart_id=self.request.user, product__slug=self.kwargs.get("slug")).exists()
-        return context
-
 class ChangeSize(RedirectView):
+    
+    """ Vue servant à changer les données dans la session de l'utilisateur lorsque qu'il change les filtre lié à la taille d'une pellicule.
+        Cette class hérite de la class RedirectView car directement après l'action de cette vue, une redirection doit etre effectué. Cette vue ne sert pas à afficher des données à l'utilisateur.
+    """
     
     permanent = False
     query_string = True
     pattern_name = reverse_lazy("store:store")
 
     def get_redirect_url(self, size):
+        
+        """ Fonction hérité de la class RedirectView servant à rediriger l'utilisateur.
+            On la redefini afin d'update la session avec les bonne données avant de rediriger l'utilisateur.
+        """
+        
         if not self.request.session.session_key :
             self.request.session.create()
         self.request.session.modified = True
@@ -87,11 +131,20 @@ class ChangeSize(RedirectView):
 
 class ChangeColor(RedirectView):
     
+    """ Vue servant à changer les données dans la session de l'utilisateur lorsque qu'il change les filtre lié à la couleur d'une pellicule
+        Cette class hérite de la class RedirectView car directement après l'action de cette vue, une redirection doit etre effectué. Cette vue ne sert pas à afficher des données à l'utilisateur.
+    """
+    
     permanent = False
     query_string = True
     pattern_name = reverse_lazy("store:store")
 
     def get_redirect_url(self, color):
+        
+        """ Fonction hérité de la class RedirectView servant à rediriger l'utilisateur.
+            On la redefini afin d'update la session avec les bonne données avant de rediriger l'utilisateur.
+        """
+        
         if not self.request.session.session_key :
             self.request.session.create()
         self.request.session.modified = True
