@@ -101,7 +101,7 @@ class StripeView(View) :
             intent = stripe.PaymentIntent.create(
                 amount = calculate_order_amount(user_cart),
                 currency='eur',
-                payment_method_types=["card", "sepa_debit"],
+                payment_method_types=["card"],
                 metadata = {"order_id": order.pk},
             )
             return JsonResponse({
