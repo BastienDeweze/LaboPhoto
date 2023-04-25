@@ -18,6 +18,7 @@ class Cart(models.Model):
     def cart_items(self) :
         
         """ Fonction réalisant la relation inverse vers les ligne d'article se trouvant dans le panier de l'utilisateur.
+        Nouveau commentaire
 
         Returns:
             QuerySet: L'ensemble des articles se trouvant dans le panier de l'utilisateur.
