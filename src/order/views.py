@@ -10,6 +10,7 @@ from datetime import datetime
 class ListAccountOrder(ListView) :
     
     """ Vue h-héritant de la class ListView et servant à lister les commandes d'un utilisateur
+    kjdfkjfdqfd
     """
     
     template_name="accounts/account_order.html"
